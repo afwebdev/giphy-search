@@ -15,7 +15,7 @@ button {
 }
 
 .contentWrap {
-  height: 100%;
+  height: auto;
   display: flex;
 }
 
@@ -32,7 +32,8 @@ button {
 }
 
 .nav-section {
-  height: 100vh;
+  min-height: 100vh;
+  height: auto;
   display: flex;
   align-items: center;
   flex-direction: column;

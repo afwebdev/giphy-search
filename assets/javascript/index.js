@@ -84,12 +84,16 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     })
 
+
+    //Button click handler
     $('.button-section').on('click', 'button', function (e) {
         let term = e.currentTarget.dataset.value
         console.log(`Searched API for: ${term}`)
         searchGIFS(term)
     })
 
+
+    //Image click handler(animated to still,  vice versa)
     $('.image-display').on('click', '.gif', function () {
         //Store current state of clicked element.
         let state = $(this).attr('data-state')
