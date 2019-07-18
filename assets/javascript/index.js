@@ -37,13 +37,17 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const buildImages = function (results) {
-        $('.image-display').html('')
+        // $('.image-display').html('')
         let images = results.data
         images.forEach(function (e) {
+            let rating = e.rating
             let animated = e.images.fixed_height.url
             let url = e.images.fixed_height_still.url
-            $('.image-display').append(`
+            $('.image-display').prepend(`
+                <div class="img-container">
                 <img src="${url}" data-still="${url}" data-animate="${animated}" data-state="still" class="gif">
+                <p>Rated: ${rating.toUpperCase()}</p>
+                </div>
             `)
         })
     }
@@ -80,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function () {
             favList.push(term)
             buildButtons();
         } else {
-            alert('ENTER TERM')
+            alert('Please Enter A Search Term.')
         }
     })
 
