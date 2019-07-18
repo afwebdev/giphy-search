@@ -87,6 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     //Button click handler
     $('.button-section').on('click', 'button', function (e) {
+        e.preventDefault();
         let term = e.currentTarget.dataset.value
         console.log(`Searched API for: ${term}`)
         searchGIFS(term)
