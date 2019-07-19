@@ -17,19 +17,21 @@ document.addEventListener('DOMContentLoaded', function () {
         "Mr Skinner",
         "Flanders"
     ]
-    //Init a blank favList, append localstorage at some point.
-    let favList = []
+    //Init a blank favList, or set as current localstorage item 'userBtns'
+    let favList = JSON.parse(localStorage.getItem("userBtns") || "[]");
 
     const buildButtons = function () {
+
+        //clear the current button list.
         $('.button-section').html('')
 
-        //Build out the buttons.
+        //Build out the built in buttons from topics array.
         topics.forEach(function (character) {
-            let btnHTML = `<button class="savedSearch" data-value="${character}">${character}</button>`
+            let btnHTML = `<button class="defaultSearch" data-value="${character}">${character}</button>`
             $('.button-section').append(btnHTML)
         })
 
-        //Build out the buttons from stored favlist
+        //Build out the buttons from stored favlist (USER INPUT)
         favList.forEach(function (character) {
             let btnHTML = `<button class="savedSearch" data-value="${character}">${character}</button>`
             $('.button-section').append(btnHTML)
@@ -60,12 +62,20 @@ document.addEventListener('DOMContentLoaded', function () {
             `${queryURL}${term}&api_key=${API_KEY}`, {
                 method: 'GET'
             }
-        ).then(function (response) {
+        ).then(response => {
             return response.json();
-        }).then(function (result) {
+        }).then(result => {
             //Send results out to be built using buildImages function
             buildImages(result)
         })
+    }
+
+
+    //Clear local storage function.
+    const clearLocal = function () {
+        localStorage.clear();
+        favList = []
+        buildButtons();
     }
 
 
@@ -76,12 +86,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     //Click Handlers.
+
+    //Add input to new button to be added to screen.
     $('#search-btn').on('click', function (e) {
         e.preventDefault()
         let term = $('.search').val()
-
+        //check for truthy -> existence
         if (term) {
+            //Store it in a local array.
             favList.push(term)
+
+            //Store it in localStorage as an 'array' string.
+            localStorage.setItem("userBtns", JSON.stringify(favList))
             buildButtons();
         } else {
             alert('Please Enter A Search Term.')
@@ -103,13 +119,13 @@ document.addEventListener('DOMContentLoaded', function () {
         //Store current state of clicked element.
         let state = $(this).attr('data-state')
 
-        //If state is still(default), change to animated.
+        //If state is still(default), change to animated on click.
         if (state === 'still') {
             $(this).attr({
                 src: this.dataset.animate,
                 'data-state': 'animated'
             })
-        } else {
+        } else {//change back to still if animated.
             $(this).attr({
                 src: this.dataset.still,
                 'data-state': 'still'
@@ -118,19 +134,9 @@ document.addEventListener('DOMContentLoaded', function () {
     })
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    $('#clear-btn').on('click', function (e) {
+        e.preventDefault();
+        clearLocal();
+    })
 
 })
